@@ -1,9 +1,9 @@
 database:
-  host: ${DB_HOST}
-  port: ${DB_PORT}
-  name: ${DB_NAME}
-  user: ${DB_USER}
-  password: ${DB_PASSWORD}
+  host: localhost
+  port: 5433
+  name: ecommerce_db
+  user: admin
+  password: password
 
 data_generation:
   customers: 1000
@@ -20,4 +20,10 @@ pipeline:
   log_level: INFO
 
 retention:
-  days: 7
+  raw_data_days: 7
+  staging_data_days: 7
+  logs_days: 7
+
+bi:
+  tool: tableau
+
