@@ -1,0 +1,7 @@
+-- =========================================
+-- Schema Initialization Script
+-- =========================================
+
+CREATE SCHEMA IF NOT EXISTS staging;
+CREATE SCHEMA IF NOT EXISTS production;
+CREATE SCHEMA IF NOT EXISTS warehouse;
