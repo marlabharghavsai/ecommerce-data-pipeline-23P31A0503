@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS staging.customers (
     email              VARCHAR(100),
     phone              VARCHAR(30),
     registration_date  DATE,
-    city               VARCHAR(50),
-    state              VARCHAR(50),
-    country             VARCHAR(50),
+    city               VARCHAR(100),
+    state              VARCHAR(100),
+    country             VARCHAR(150),
     age_group          VARCHAR(20),
     loaded_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
