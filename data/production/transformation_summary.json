@@ -1,0 +1,47 @@
+{
+    "transformation_timestamp": "2025-12-21T12:45:28.874642+00:00",
+    "records_processed": {
+        "customers": {
+            "input": 1000,
+            "output": 1000,
+            "filtered": 0,
+            "rejected_reasons": {}
+        },
+        "products": {
+            "input": 500,
+            "output": 500,
+            "filtered": 0,
+            "rejected_reasons": {}
+        },
+        "transactions": {
+            "input": 10000,
+            "output": 10000,
+            "filtered": 0,
+            "rejected_reasons": {
+                "total_amount<=0": 0
+            }
+        },
+        "transaction_items": {
+            "input": 30132,
+            "output": 30132,
+            "filtered": 0,
+            "rejected_reasons": {
+                "quantity<=0": 0
+            }
+        }
+    },
+    "transformations_applied": [
+        "text_normalization",
+        "email_standardization",
+        "phone_standardization",
+        "profit_margin_calculation",
+        "price_category_assignment",
+        "business_rule_filtering",
+        "transaction_total_reconciliation"
+    ],
+    "data_quality_post_transform": {
+        "null_violations": 0,
+        "constraint_violations": 0
+    },
+    "execution_time_seconds": 1.25
+}
