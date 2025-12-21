@@ -36,7 +36,8 @@ services:
     volumes:
       - ../data:/app/data
       - ../logs:/app/logs
-    command: python scripts/pipeline_orchestrator.py
+    command: >
+      sh -c "python scripts/pipeline_orchestrator.py && tail -f /dev/null"
 
 volumes:
   postgres_data:
