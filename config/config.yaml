@@ -1,0 +1,23 @@
+database:
+  host: ${DB_HOST}
+  port: ${DB_PORT}
+  name: ${DB_NAME}
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
+
+data_generation:
+  customers: 1000
+  products: 500
+  transactions: 10000
+  min_items_per_txn: 1
+  max_items_per_txn: 5
+  start_date: "2024-01-01"
+  end_date: "2024-12-31"
+
+pipeline:
+  batch_size: 1000
+  retry_attempts: 3
+  log_level: INFO
+
+retention:
+  days: 7

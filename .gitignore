@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+
+# Logs
+logs/
+*.log
+
+# Data files (generated)
+data/raw/*.csv
+data/staging/*
+data/processed/*
+!data/**/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Docker
+*.pid
