@@ -12,11 +12,11 @@ cur = conn.cursor()
 
 print("Loading warehouse...")
 
-# -------------------------
-# DIM DATE
-# -------------------------
-start = date(2024,1,1)
-end = date(2024,12,31)
+# =========================
+# DIM DATE (Idempotent)
+# =========================
+start = date(2024, 1, 1)
+end = date(2024, 12, 31)
 d = start
 
 while d <= end:
@@ -30,7 +30,7 @@ while d <= end:
         int(d.strftime("%Y%m%d")),
         d,
         d.year,
-        (d.month-1)//3+1,
+        (d.month - 1) // 3 + 1,
         d.month,
         d.day,
         d.strftime("%B"),
@@ -40,9 +40,9 @@ while d <= end:
     ))
     d += timedelta(days=1)
 
-# -------------------------
+# =========================
 # DIM PAYMENT METHOD
-# -------------------------
+# =========================
 cur.execute("""
 INSERT INTO warehouse.dim_payment_method (payment_method_name, payment_type)
 SELECT DISTINCT payment_method,
@@ -52,16 +52,26 @@ FROM production.transactions
 ON CONFLICT DO NOTHING
 """)
 
-# -------------------------
-# DIM CUSTOMERS (SCD2 SIMPLE)
-# -------------------------
+# =========================
+# TRUNCATE (IDEMPOTENCY)
+# =========================
+cur.execute("TRUNCATE warehouse.fact_sales CASCADE")
+cur.execute("TRUNCATE warehouse.dim_customers CASCADE")
+cur.execute("TRUNCATE warehouse.dim_products CASCADE")
+cur.execute("TRUNCATE warehouse.agg_daily_sales")
+cur.execute("TRUNCATE warehouse.agg_product_performance")
+cur.execute("TRUNCATE warehouse.agg_customer_metrics")
+
+# =========================
+# DIM CUSTOMERS (SCD2 SIMPLIFIED)
+# =========================
 cur.execute("""
 INSERT INTO warehouse.dim_customers
 (customer_id, full_name, email, city, state, country, age_group,
  customer_segment, registration_date, effective_date, end_date, is_current)
 SELECT
 c.customer_id,
-c.first_name||' '||c.last_name,
+c.first_name || ' ' || c.last_name,
 c.email,
 c.city,
 c.state,
@@ -75,9 +85,9 @@ TRUE
 FROM production.customers c
 """)
 
-# -------------------------
-# DIM PRODUCTS (SCD2 SIMPLE)
-# -------------------------
+# =========================
+# DIM PRODUCTS (SCD2 SIMPLIFIED)
+# =========================
 cur.execute("""
 INSERT INTO warehouse.dim_products
 (product_id, product_name, category, sub_category, brand,
@@ -95,9 +105,9 @@ TRUE
 FROM production.products p
 """)
 
-# -------------------------
-# FACT SALES
-# -------------------------
+# =========================
+# FACT SALES (REBUILT)
+# =========================
 cur.execute("""
 INSERT INTO warehouse.fact_sales
 (date_key, customer_key, product_key, payment_method_key,
@@ -111,24 +121,25 @@ pm.payment_method_key,
 ti.transaction_id,
 ti.quantity,
 ti.unit_price,
-(ti.unit_price*ti.quantity*(ti.discount_percentage/100)),
+(ti.unit_price * ti.quantity * (ti.discount_percentage / 100)),
 ti.line_total,
-ti.line_total - (p.cost*ti.quantity)
+ti.line_total - (p.cost * ti.quantity)
 FROM production.transaction_items ti
-JOIN production.transactions t ON ti.transaction_id=t.transaction_id
-JOIN production.products p ON ti.product_id=p.product_id
-JOIN warehouse.dim_date dd ON dd.full_date=t.transaction_date
-JOIN warehouse.dim_customers dc ON dc.customer_id=t.customer_id AND dc.is_current=TRUE
-JOIN warehouse.dim_products dp ON dp.product_id=ti.product_id AND dp.is_current=TRUE
-JOIN warehouse.dim_payment_method pm ON pm.payment_method_name=t.payment_method
+JOIN production.transactions t ON ti.transaction_id = t.transaction_id
+JOIN production.products p ON ti.product_id = p.product_id
+JOIN warehouse.dim_date dd ON dd.full_date = t.transaction_date
+JOIN warehouse.dim_customers dc ON dc.customer_id = t.customer_id AND dc.is_current = TRUE
+JOIN warehouse.dim_products dp ON dp.product_id = ti.product_id AND dp.is_current = TRUE
+JOIN warehouse.dim_payment_method pm ON pm.payment_method_name = t.payment_method
 """)
 
-# -------------------------
-# AGGREGATES
-# -------------------------
+# =========================
+# AGGREGATES (IDEMPOTENT)
+# =========================
 cur.execute("""
 INSERT INTO warehouse.agg_daily_sales
-SELECT date_key,
+SELECT
+date_key,
 COUNT(DISTINCT transaction_id),
 SUM(line_total),
 SUM(profit),
@@ -141,4 +152,4 @@ conn.commit()
 cur.close()
 conn.close()
 
-print("Warehouse load completed")
+print("Warehouse load completed successfully")
