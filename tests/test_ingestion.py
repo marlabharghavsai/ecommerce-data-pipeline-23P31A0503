@@ -1,12 +1,13 @@
+import os
 import psycopg2
 
 def get_conn():
     return psycopg2.connect(
-        host="localhost",
-        port=5433,
-        dbname="ecommerce_db",
-        user="admin",
-        password="password"
+        host=os.getenv("DB_HOST", "localhost"),
+        port=int(os.getenv("DB_PORT", 5432)),
+        dbname=os.getenv("DB_NAME", "ecommerce_db"),
+        user=os.getenv("DB_USER", "admin"),
+        password=os.getenv("DB_PASSWORD", "password"),
     )
 
 def test_staging_tables_exist():

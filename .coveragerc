@@ -1,0 +1,10 @@
+[run]
+omit =
+    scripts/scheduler.py
+    scripts/pipeline_orchestrator.py
+    scripts/cleanup_old_data.py
+    scripts/monitoring/*
+    scripts/transformation/generate_analytics.py
+    scripts/transformation/load_warehouse.py
+    scripts/transformation/staging_to_production.py
+
