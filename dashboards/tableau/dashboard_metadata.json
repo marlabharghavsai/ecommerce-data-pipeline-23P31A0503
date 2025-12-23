@@ -1,0 +1,9 @@
+{
+  "bi_tool": "tableau",
+  "dashboard_name": "E-Commerce Analytics Dashboard",
+  "public_url": "https://public.tableau.com/app/profile/bharghav.sai.marla/vizzes",
+  "pages": 4,
+  "visualizations": 16,
+  "data_source": "CSV exports from warehouse analytics",
+  "created_date": "2025-12-21"
+}
