@@ -3,7 +3,7 @@
 ## Accessing the Dashboard
 
 ### Tableau Public
-URL: https://public.tableau.com/views/YOUR_DASHBOARD_URL
+URL: https://public.tableau.com/app/profile/bharghav.sai.marla/vizzes
 
 ---
 
