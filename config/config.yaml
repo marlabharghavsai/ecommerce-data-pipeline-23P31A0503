@@ -27,3 +27,6 @@ retention:
 bi:
   tool: tableau
 
+scheduler:
+  pipeline_run_time: "02:00"
+
