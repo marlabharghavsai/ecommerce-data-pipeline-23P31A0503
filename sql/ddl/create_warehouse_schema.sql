@@ -50,10 +50,10 @@ CREATE TABLE IF NOT EXISTS warehouse.dim_customers (
 CREATE TABLE IF NOT EXISTS warehouse.dim_products (
     product_key SERIAL PRIMARY KEY,
     product_id VARCHAR(20),
-    product_name VARCHAR(120),
-    category VARCHAR(60),
+    product_name VARCHAR(255),
+    category VARCHAR(100),
     sub_category VARCHAR(60),
-    brand VARCHAR(60),
+    brand VARCHAR(100),
     price_range VARCHAR(20),
     effective_date DATE,
     end_date DATE,
