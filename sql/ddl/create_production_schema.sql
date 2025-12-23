@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS production.products (
     sub_category     VARCHAR(100),
     price            DECIMAL(12,2) NOT NULL CHECK (price >= 0),
     cost             DECIMAL(12,2) NOT NULL CHECK (cost >= 0),
+    profit_margin    DECIMAL(5,2),
+    price_category   VARCHAR(50),
     brand            VARCHAR(150),
     stock_quantity   INTEGER NOT NULL CHECK (stock_quantity >= 0),
     supplier_id      VARCHAR(20),
@@ -33,6 +35,7 @@ CREATE TABLE IF NOT EXISTS production.products (
     updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CHECK (cost < price)
 );
+
 
 -- =====================================================
 -- PRODUCTION: Transactions
