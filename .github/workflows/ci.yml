@@ -10,9 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # -------------------------------
-    # PostgreSQL Service
-    # -------------------------------
     services:
       postgres:
         image: postgres:14
@@ -74,11 +71,7 @@ jobs:
       # -------------------------------
       - name: Create schemas
         env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: ecommerce_db_test
-          DB_USER: test_user
-          DB_PASSWORD: test_password
+          PGPASSWORD: test_password
         run: |
           psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_staging_schema.sql
           psql -h localhost -U test_user -d ecommerce_db_test -f sql/ddl/create_production_schema.sql
@@ -98,7 +91,7 @@ jobs:
           python scripts/ingestion/ingest_to_staging.py
 
       # -------------------------------
-      # Run Transformations (Staging → Prod → Warehouse)
+      # Run Transformations
       # -------------------------------
       - name: Run transformations
         env:
@@ -122,7 +115,11 @@ jobs:
           DB_USER: test_user
           DB_PASSWORD: test_password
         run: |
-          pytest tests/ -v --cov=scripts --cov-report=term-missing
+          pytest tests/ \
+            -v \
+            --cov=scripts \
+            --cov-report=term-missing \
+            --cov-config=.coveragerc
 
       # -------------------------------
       # Enforce Coverage Threshold
