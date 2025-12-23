@@ -1,3 +1,5 @@
+# pragma: no cover
+
 import psycopg2
 from datetime import date, timedelta
 

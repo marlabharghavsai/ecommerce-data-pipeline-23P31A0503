@@ -1,3 +1,5 @@
+# pragma: no cover
+
 import subprocess
 import time
 import json

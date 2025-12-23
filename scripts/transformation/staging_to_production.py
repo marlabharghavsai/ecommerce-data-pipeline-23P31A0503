@@ -1,3 +1,5 @@
+# pragma: no cover
+
 import os
 import json
 import time

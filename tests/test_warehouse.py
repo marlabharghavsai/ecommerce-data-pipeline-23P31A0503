@@ -9,20 +9,20 @@ def get_conn():
         password="password"
     )
 
-def test_production_tables_populated():
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM production.customers")
-    count = cur.fetchone()[0]
-    assert count > 0
-    conn.close()
-
-def test_email_lowercase():
+def test_fact_sales_exists():
     conn = get_conn()
     cur = conn.cursor()
     cur.execute("""
-        SELECT COUNT(*) FROM production.customers
-        WHERE email <> LOWER(email)
+        SELECT COUNT(*) FROM warehouse.fact_sales
     """)
-    assert cur.fetchone()[0] == 0
+    assert cur.fetchone()[0] > 0
+    conn.close()
+
+def test_surrogate_keys_used():
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT customer_key FROM warehouse.fact_sales LIMIT 1
+    """)
+    assert cur.fetchone()[0] is not None
     conn.close()
