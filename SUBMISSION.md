@@ -101,5 +101,25 @@ pytest tests/ -v
 ## Declaration
 - I hereby declare that this project is my original work and has been completed independently.
 
+## Final Submission Steps
+```
+git add .
+git commit -m "Final submission"
+git push origin main
+```
+- Release Tag
+```
+git tag -a v1.0 -m "Final Submission"
+git push origin v1.0
+```
+
+
+
+
+
+
+
+
+
 ## Signature: Bharghav Sai Marla
 ## Date: 24-12-2025 
